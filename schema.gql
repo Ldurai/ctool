@@ -1,0 +1,26 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+"""Job entity representing a job posting"""
+type Job {
+  job_id: ID!
+  job_title: String!
+  job_description: String!
+}
+
+type Query {
+  jobs: [Job!]!
+  job(id: Float!): Job!
+}
+
+type Mutation {
+  addJob(newJobData: NewJobInput!): Job!
+}
+
+input NewJobInput {
+  job_title: String!
+  job_description: String
+}
