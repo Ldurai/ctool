@@ -14,5 +14,6 @@ import { JobsController } from './job.controller';
     JobsService, // Add the JobsService to the providers array
   ],
   controllers: [JobsController],
+  exports: [JobsService],
 })
 export class JobsModule {}
