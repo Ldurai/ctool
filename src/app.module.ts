@@ -7,11 +7,15 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EmployeeModule } from './employees/employees.module';
+import { EmployeeSelfAssessmentModule } from './employee-self-assesment/employee-self-assessment.module';
 
 
 @Module({
   imports: [
     JobsModule,
+    EmployeeModule,
+    EmployeeSelfAssessmentModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
