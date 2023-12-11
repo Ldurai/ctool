@@ -9,6 +9,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EmployeeModule } from './employees/employees.module';
 import { EmployeeSelfAssessmentModule } from './employee-self-assesment/employee-self-assessment.module';
+import { EmployeeSelfAssessmentSectionsModule} from './employee-self-assesment-sections/employee-self-assessment-sections.module';
+import { PerformanceCycleModule } from './performance-cyle/performance-cycle.module';
 
 
 @Module({
@@ -16,6 +18,8 @@ import { EmployeeSelfAssessmentModule } from './employee-self-assesment/employee
     JobsModule,
     EmployeeModule,
     EmployeeSelfAssessmentModule,
+    EmployeeSelfAssessmentSectionsModule,
+    PerformanceCycleModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
