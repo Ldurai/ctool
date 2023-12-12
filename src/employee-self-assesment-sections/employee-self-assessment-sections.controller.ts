@@ -28,14 +28,18 @@ export class EmployeeSelfAssessmentSectionsController {
         const newSection = await this.service.create(sectionData);
         return res.status(HttpStatus.CREATED).json(newSection);
     }
+    // Create a new assessment
+    
 
     // Update an existing section
     @Put(':tenantId/:assessmentId/:sectionId')
     async update(@Param('tenantId') tenantId: number, @Param('assessmentId') assessmentId: number, @Param('sectionId') sectionId: number, @Body() sectionData: EmployeeSelfAssessmentSectionsModel, @Res() res: Response) {
+        console.log("entering update for sections");
         const updatedSection = await this.service.update(tenantId, assessmentId, sectionId, sectionData);
         return res.status(HttpStatus.OK).json(updatedSection);
     }
-
+    
+ 
     // Delete a section
     @Delete(':tenantId/:assessmentId/:sectionId')
     async delete(@Param('tenantId') tenantId: number, @Param('assessmentId') assessmentId: number, @Param('sectionId') sectionId: number, @Res() res: Response) {

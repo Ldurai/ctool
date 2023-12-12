@@ -48,6 +48,13 @@ type EmployeeSelfAssessmentType {
   additionalcomments: String
 }
 
+type EmployeeSelfAssessmentSection {
+  tenant_id: Int!
+  assessmentid: Int!
+  sectionid: Int!
+  response: String
+}
+
 type Query {
   jobs: [Job!]!
   job(job_id: Float!): Job!
@@ -55,6 +62,8 @@ type Query {
   employee(id: Int!): EmployeeType!
   employeeSelfAssessments: [EmployeeSelfAssessmentType!]!
   employeeSelfAssessment(tenantId: Int!, assessmentId: Int!): EmployeeSelfAssessmentType!
+  employeeSelfAssessmentSections: [EmployeeSelfAssessmentSection!]!
+  employeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!): EmployeeSelfAssessmentSection!
 }
 
 type Mutation {
@@ -62,6 +71,9 @@ type Mutation {
   createEmployeeSelfAssessment(input: EmployeeSelfAssessmentInput!): EmployeeSelfAssessmentType!
   updateEmployeeSelfAssessment(tenantId: Int!, assessmentId: Int!, input: EmployeeSelfAssessmentInput!): EmployeeSelfAssessmentType!
   deleteEmployeeSelfAssessment(tenantId: Int!, assessmentId: Int!): Boolean!
+  createEmployeeSelfAssessmentSection(input: EmployeeSelfAssessmentSectionInput!): EmployeeSelfAssessmentSection!
+  updateEmployeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!, input: EmployeeSelfAssessmentSectionInput!): EmployeeSelfAssessmentSection!
+  deleteEmployeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!): Boolean!
 }
 
 input NewJobInput {
@@ -79,4 +91,11 @@ input EmployeeSelfAssessmentInput {
   goals: String
   managerfeedbackid: Int
   additionalcomments: String
+}
+
+input EmployeeSelfAssessmentSectionInput {
+  tenant_id: Int!
+  assessmentid: Int!
+  sectionid: Int!
+  response: String
 }
