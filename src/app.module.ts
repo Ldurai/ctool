@@ -11,6 +11,17 @@ import { EmployeeModule } from './employees/employees.module';
 import { EmployeeSelfAssessmentModule } from './employee-self-assesment/employee-self-assessment.module';
 import { EmployeeSelfAssessmentSectionsModule} from './employee-self-assesment-sections/employee-self-assessment-sections.module';
 import { PerformanceCycleModule } from './performance-cyle/performance-cycle.module';
+import { PerformanceTemplateModule } from './performance-template/performance-template.module';
+import { SelfAssessmentTemplateModule } from './self-assessment-template/self-assessment-template.module';
+// // Import your entities
+ import { JobEntity } from './job/jobs.entity';
+import { EmployeeEntity } from './employees/employees.entity';
+import { EmployeeSelfAssessmentEntity } from './employee-self-assesment/employee-self-assessment.entity';
+import { EmployeeSelfAssessmentSectionsEntity } from './employee-self-assesment-sections/employee-self-assessment-sections.entity';
+import { PerformanceCycleEntity } from './performance-cyle/performance-cycle.entity';
+import { PerformanceTemplateEntity } from './performance-template/performance-template.entity';
+import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-assessment-template.entity';
+
 
 
 @Module({
@@ -20,6 +31,8 @@ import { PerformanceCycleModule } from './performance-cyle/performance-cycle.mod
     EmployeeSelfAssessmentModule,
     EmployeeSelfAssessmentSectionsModule,
     PerformanceCycleModule,
+    PerformanceTemplateModule,
+    SelfAssessmentTemplateModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
@@ -38,12 +51,15 @@ import { PerformanceCycleModule } from './performance-cyle/performance-cycle.mod
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: 'postgres://lakshimi:3bcMX15PekuTB1o9qCG7CiIWxjtJ40nQ@dpg-cllqm09fb9qs7394381g-a.oregon-postgres.render.com/my_database_go6i',
-      // host: 'postgres://dpg-c11qm09fb9qs7394381g-a.oregon-postgres.render.com',
-      // port: 5432,
-      // username: 'lakshimi',
-      // password: '3bcMX15PekuTB1o9qCG7CiIWxjtJ40nQ',
-      // database: 'my_database_go6i',
-      autoLoadEntities: true,
+      entities: [
+        JobEntity,
+        EmployeeEntity,
+        EmployeeSelfAssessmentEntity,
+        EmployeeSelfAssessmentSectionsEntity,
+        PerformanceCycleEntity,
+        PerformanceTemplateEntity,
+        SelfAssessmentTemplateEntity,
+      ],
       synchronize: false,
       ssl: {
         rejectUnauthorized: false, // Should be true in production

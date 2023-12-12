@@ -1,53 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EmployeeSelfAssessmentEntity } from './employee-self-assessment.entity';
-import { EmployeeSelfAssessmentModel } from '././models/employee-self-assessment.model';
+import { EmployeeSelfAssessmentInput } from './dto/employee-self-assessment.input';
 
 @Injectable()
 export class EmployeeSelfAssessmentService {
     constructor(
         @InjectRepository(EmployeeSelfAssessmentEntity)
-        private employeeSelfAssessmentRepository: Repository<EmployeeSelfAssessmentEntity>,
+        private readonly repository: Repository<EmployeeSelfAssessmentEntity>
     ) {}
 
-    // Fetch all assessments
     async findAll(): Promise<EmployeeSelfAssessmentEntity[]> {
-        return await this.employeeSelfAssessmentRepository.find();
-    }
-    //Fetch assessments by employee ID
-    async findByEmployeeId(employeeId: number): Promise<EmployeeSelfAssessmentEntity[]> {
-        console.log('enterinng assesement service');
-
-        return await this.employeeSelfAssessmentRepository.find({
-            where: { employeeid: employeeId }
-        });
+        return await this.repository.find();
     }
 
-    // Fetch a single assessment by ID
-    async findOne(assessmentId: number, tenantId: number): Promise<EmployeeSelfAssessmentEntity> {
-        return await this.employeeSelfAssessmentRepository.findOne({ where: { assessmentid: assessmentId, tenant_id: tenantId } });
+    async findOne(tenantId: number, assessmentId: number): Promise<EmployeeSelfAssessmentEntity> {
+        const assessment = await this.repository.findOne({ where: { tenant_id: tenantId, assessmentid: assessmentId } });
+        if (!assessment) {
+            throw new NotFoundException(`Employee Self-Assessment with Tenant ID ${tenantId} and Assessment ID ${assessmentId} not found`);
+        }
+        return assessment;
+    }
+    async findByEmployeeId(employee_id: number): Promise<EmployeeSelfAssessmentEntity> {
+        const assessment = await this.repository.findOne({ where: { employeeid: employee_id } });
+        if (!assessment) {
+            throw new NotFoundException(`Employee Self-Assessment with employee ID ${employee_id} not found`);
+        }
+        return assessment;
     }
 
-    // Create a new assessment
-    async create(assessment: EmployeeSelfAssessmentModel): Promise<EmployeeSelfAssessmentEntity> {
-        return await this.employeeSelfAssessmentRepository.save(assessment);
+    async create(input: EmployeeSelfAssessmentInput): Promise<EmployeeSelfAssessmentEntity> {
+        const newAssessment = this.repository.create(input);
+        return await this.repository.save(newAssessment);
     }
 
-    // Update an existing assessment
-    async update(assessmentId: number, tenantId: number, assessmentData: EmployeeSelfAssessmentModel): Promise<EmployeeSelfAssessmentEntity> {
-        const assessmentToUpdate = await this.employeeSelfAssessmentRepository.findOne({ where: { assessmentid: assessmentId, tenant_id: tenantId } });
-        if (!assessmentToUpdate) throw new Error('Assessment not found');
-
-        Object.assign(assessmentToUpdate, assessmentData);
-        return await this.employeeSelfAssessmentRepository.save(assessmentToUpdate);
+    async update(tenantId: number, assessmentId: number, input: EmployeeSelfAssessmentInput): Promise<EmployeeSelfAssessmentEntity> {
+        const assessment = await this.findOne(tenantId, assessmentId);
+        Object.assign(assessment, input);
+        return await this.repository.save(assessment);
     }
 
-    // Delete an assessment
-    async delete(assessmentId: number, tenantId: number): Promise<void> {
-        const result = await this.employeeSelfAssessmentRepository.delete({ assessmentid: assessmentId, tenant_id: tenantId });
+    async delete(tenantId: number, assessmentId: number): Promise<void> {
+        const result = await this.repository.delete({ tenant_id: tenantId, assessmentid: assessmentId });
         if (result.affected === 0) {
-            throw new Error('Assessment not found or not deleted');
+            throw new NotFoundException(`Employee Self-Assessment with Tenant ID ${tenantId} and Assessment ID ${assessmentId} not found`);
         }
     }
 }

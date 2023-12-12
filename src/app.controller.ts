@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import {Job} from './job/jobs.entity';
+import {JobEntity} from './job/jobs.entity';
 
 @Controller()
 export class AppController {
@@ -12,7 +12,7 @@ export class AppController {
     return this.appService.getHello();
   }
   @Get('/getjobs')
-  getJobs(): Promise<Job[]> {
+  getJobs(): Promise<JobEntity[]> {
     return this.appService.getJobs();
   }
   

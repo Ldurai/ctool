@@ -8,7 +8,7 @@ import {
     ParseIntPipe,
   } from '@nestjs/common';
   //import { CreateUserDto } from './dto/create-user.dto';
-  import { Job } from './jobs.entity';
+  import { JobEntity } from './jobs.entity';
   import { JobsService } from './jobs.service';
   
   @Controller('jobs')
@@ -21,7 +21,7 @@ import {
     // }
   
     @Get()
-    findAll(): Promise<Job[]> {
+    findAll(): Promise<JobEntity[]> {
         console.log('entering controller')
       return this.jobsService.findAll();
     }

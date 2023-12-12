@@ -15,7 +15,7 @@ export class JobsResolver {
   }
 
   @Query(returns => Job)
-  async job(@Args('id') id: number): Promise<Job> {
+  async job(@Args('job_id') id: number): Promise<Job> {
     const job = await this.jobsService.findOneById(id);
     if (!job) {
       throw new NotFoundException(id);

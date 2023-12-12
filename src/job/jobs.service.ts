@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { NewJobInput } from './dto/new-job.input';
-import { Job } from './jobs.entity';
+import { JobEntity } from './jobs.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 
 @Injectable()
 export class JobsService {
-  private jobs: Job[] = []; // This is a placeholder. Replace it with your database logic.
+  private jobs: JobEntity[] = []; // This is a placeholder. Replace it with your database logic.
   constructor(
-    @InjectRepository(Job)
-    private readonly jobRepository: Repository<Job>,
+    @InjectRepository(JobEntity)
+    private readonly jobRepository: Repository<JobEntity>,
   ) {}
-  async create(data: NewJobInput): Promise<Job> {
-    const newJob = { job_id: Date.now(), ...data } as Job; // This is a mock implementation. Replace with real logic.
+  async create(data: NewJobInput): Promise<JobEntity> {
+    const newJob = { job_id: Date.now(), ...data } as JobEntity; // This is a mock implementation. Replace with real logic.
     this.jobs.push(newJob);
     return newJob;
   }
 
-  async findAll(): Promise<Job[]> {
+  async findAll(): Promise<JobEntity[]> {
     // Wait for the Promise to resolve and store the result in a variable
     const jobs = await this.jobRepository.find();
 
@@ -29,7 +29,7 @@ export class JobsService {
     return jobs;
   }
 
-  async findOneById(id: number): Promise<Job> {
+  async findOneById(id: number): Promise<JobEntity> {
     return this.jobs.find(job => job.job_id === id); // Replace with database fetching logic.
   }
 

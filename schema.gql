@@ -11,16 +11,72 @@ type Job {
   job_description: String!
 }
 
+type EmployeeType {
+  tenant_id: Int
+  employee_id: Int!
+  employee_name: String
+  employee_code: String
+  employee_photo_link: String
+  last_promo_date: DateTime
+  job_id: Int
+  job_level: String
+  job_function: String
+  job_role: String
+  location: String
+  job_title: String
+  department_id: Int
+  department_name: String
+  manager_id: Int
+  hire_date: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type EmployeeSelfAssessmentType {
+  assessmentid: ID!
+  tenant_id: Int!
+  employeeid: Int!
+  assessmentdate: DateTime!
+  performancecycleid: Int
+  strengths: String
+  weaknesses: String
+  goals: String
+  managerfeedbackid: Int
+  additionalcomments: String
+}
+
 type Query {
   jobs: [Job!]!
-  job(id: Float!): Job!
+  job(job_id: Float!): Job!
+  employees: [EmployeeType!]!
+  employee(id: Int!): EmployeeType!
+  employeeSelfAssessments: [EmployeeSelfAssessmentType!]!
+  employeeSelfAssessment(tenantId: Int!, assessmentId: Int!): EmployeeSelfAssessmentType!
 }
 
 type Mutation {
   addJob(newJobData: NewJobInput!): Job!
+  createEmployeeSelfAssessment(input: EmployeeSelfAssessmentInput!): EmployeeSelfAssessmentType!
+  updateEmployeeSelfAssessment(tenantId: Int!, assessmentId: Int!, input: EmployeeSelfAssessmentInput!): EmployeeSelfAssessmentType!
+  deleteEmployeeSelfAssessment(tenantId: Int!, assessmentId: Int!): Boolean!
 }
 
 input NewJobInput {
   job_title: String!
   job_description: String
+}
+
+input EmployeeSelfAssessmentInput {
+  tenant_id: Int!
+  employeeid: Int!
+  assessmentdate: DateTime!
+  performancecycleid: Int
+  strengths: String
+  weaknesses: String
+  goals: String
+  managerfeedbackid: Int
+  additionalcomments: String
 }
