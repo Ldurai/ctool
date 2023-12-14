@@ -1,9 +1,10 @@
+
 export class SelfAssessmentTemplateModel {
     tenantid: number;
-    sectionid?: number;
+    sectionid: number;
     functionalarea: string;
-    level?: number;
+    level: number;
     sectiontitle: string;
     ismandatory: boolean;
-    sectiondetails?: string;
+    sectiondetails: string;
 }

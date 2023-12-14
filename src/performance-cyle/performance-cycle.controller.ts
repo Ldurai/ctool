@@ -10,6 +10,8 @@ export class PerformanceCycleController {
     @Get()
     async getAll(@Res() res: Response) {
         const cycles = await this.service.findAll();
+        console.log('in controller', cycles);
+
         return res.status(HttpStatus.OK).json(cycles);
     }
 

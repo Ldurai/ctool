@@ -1,42 +1,37 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PerformanceCycleEntity } from './performance-cycle.entity';
-import { PerformanceCycleModel } from './models/performance-cycle.model';
 
 @Injectable()
 export class PerformanceCycleService {
-    constructor(
-        @InjectRepository(PerformanceCycleEntity)
-        private repository: Repository<PerformanceCycleEntity>,
-    ) {}
+  constructor(
+    @InjectRepository(PerformanceCycleEntity)
+    private performanceCycleRepository: Repository<PerformanceCycleEntity>,
+  ) {}
 
-    async findAll(): Promise<PerformanceCycleEntity[]> {
-        return await this.repository.find();
-    }
+  async findAll(): Promise<PerformanceCycleEntity[]> {
+    const cycles = await this.performanceCycleRepository.find();
+      console.log('data from db', cycles);
+      return cycles;
+}
 
-    async findOne(tenantId: number, cycleId: number): Promise<PerformanceCycleEntity> {
-        const performanceCycle = await this.repository.findOne({ where: { tenantid: tenantId, cycleid: cycleId } });
-        if (!performanceCycle) {
-            throw new NotFoundException(`Performance Cycle with Tenant ID ${tenantId} and Cycle ID ${cycleId} not found`);
-        }
-        return performanceCycle;
-    }
+  findOne(tenantid: number, cycleId: number): Promise<PerformanceCycleEntity | undefined> {
+    return this.performanceCycleRepository.findOne({ where: { tenantid: tenantid, cycleid: cycleId } });
+  }
 
-    async create(performanceCycleData: PerformanceCycleModel): Promise<PerformanceCycleEntity> {
-        return await this.repository.save(performanceCycleData);
-    }
+  create(performanceCycle: PerformanceCycleEntity): Promise<PerformanceCycleEntity> {
+    return this.performanceCycleRepository.save(performanceCycle);
+  }
 
-    async update(tenantId: number, cycleId: number, performanceCycleData: PerformanceCycleModel): Promise<PerformanceCycleEntity> {
-        const performanceCycle = await this.findOne(tenantId, cycleId);
-        Object.assign(performanceCycle, performanceCycleData);
-        return await this.repository.save(performanceCycle);
-    }
+  async update(tenantId: number, cycleId : number,updateData: Partial<PerformanceCycleEntity>): Promise<PerformanceCycleEntity> {
+    await this.performanceCycleRepository.update(tenantId, updateData);
+    return this.performanceCycleRepository.findOne({ where: { tenantid: tenantId, cycleid: cycleId } });
+  }
 
-    async delete(tenantId: number, cycleId: number): Promise<void> {
-        const result = await this.repository.delete({ tenantid: tenantId, cycleid: cycleId });
-        if (result.affected === 0) {
-            throw new NotFoundException(`Performance Cycle with Tenant ID ${tenantId} and Cycle ID ${cycleId} not found`);
-        }
-    }
+  async delete(tenantId : number, cycleId : number): Promise<void> {
+    const result = await this.performanceCycleRepository.delete({ tenantid: tenantId, cycleid: cycleId });
+    if (result.affected === 0) {
+        throw new NotFoundException(`Employee Self-Assessment with Tenant ID ${tenantId} and Assessment ID ${cycleId} not found`);
+    }  }
 }

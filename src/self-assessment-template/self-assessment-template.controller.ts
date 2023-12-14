@@ -13,7 +13,7 @@ export class SelfAssessmentTemplateController {
         return res.status(HttpStatus.OK).json(templates);
     }
 
-    @Get(':tenantId/:sectionId')
+    @Get(':tenantId/:sectionId')       
     async getOne(@Param('tenantId') tenantId: number, @Param('sectionId') sectionId: number, @Res() res: Response) {
         const template = await this.service.findOne(tenantId, sectionId);
         return res.status(HttpStatus.OK).json(template);

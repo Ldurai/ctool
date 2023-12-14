@@ -55,6 +55,34 @@ type EmployeeSelfAssessmentSection {
   response: String
 }
 
+type PerformanceCycleType {
+  tenantid: Int!
+  cycleid: Int!
+  cyclename: String
+  cyclerange: String
+  startdate: DateTime
+  enddate: DateTime
+  status: String
+  description: String
+}
+
+type PerformanceTemplate {
+  templateid: Int!
+  tenantid: Int!
+  templatename: String
+  templatedescription: String
+}
+
+type SelfAssessmentTemplate {
+  sectionid: Int!
+  tenantid: Int!
+  functionalarea: String!
+  level: Float
+  sectiontitle: String!
+  ismandatory: Boolean!
+  sectiondetails: String
+}
+
 type Query {
   jobs: [Job!]!
   job(job_id: Float!): Job!
@@ -64,6 +92,13 @@ type Query {
   employeeSelfAssessment(tenantId: Int!, assessmentId: Int!): EmployeeSelfAssessmentType!
   employeeSelfAssessmentSections: [EmployeeSelfAssessmentSection!]!
   employeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!): EmployeeSelfAssessmentSection!
+  performanceCycles: [PerformanceCycleType!]!
+  performanceCycle(tenantId: Float!, cycleId: Float!): PerformanceCycleType!
+  performanceTemplates: [PerformanceTemplate!]!
+  performanceTemplate(templateId: Int!): PerformanceTemplate!
+  selfAssessmentTemplates: [SelfAssessmentTemplate!]!
+  selfAssessmentTemplate(tenantid: Int!, sectionid: Int!): SelfAssessmentTemplate!
+  selfAssessmentTemplateBylevel(tenantid: Int!, functionalarea: String!, level: Int!): SelfAssessmentTemplate!
 }
 
 type Mutation {
@@ -74,6 +109,13 @@ type Mutation {
   createEmployeeSelfAssessmentSection(input: EmployeeSelfAssessmentSectionInput!): EmployeeSelfAssessmentSection!
   updateEmployeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!, input: EmployeeSelfAssessmentSectionInput!): EmployeeSelfAssessmentSection!
   deleteEmployeeSelfAssessmentSection(tenantId: Float!, assessmentId: Float!, sectionId: Float!): Boolean!
+  createPerformanceCycle(performanceCycleInput: PerformanceCycleInput!): PerformanceCycleType!
+  updatePerformanceCycle(tenantid: Float!, cycleId: Float!, performanceCycleInput: PerformanceCycleInput!): PerformanceCycleType!
+  deletePerformanceCycle(tenantId: Float!, cycleId: Float!): Boolean!
+  createPerformanceTemplate(PerformanceTemplateInput: PerformanceTemplateInput!): PerformanceTemplate!
+  updatePerformanceTemplate(id: Int!, updatePerformanceTemplateInput: PerformanceTemplateInput!): PerformanceTemplate!
+  createSelfAssessmentTemplate(selfAssessmentTemplateInput: SelfAssessmentTemplateInput!): SelfAssessmentTemplate!
+  updateSelfAssessmentTemplate(sectionid: Int!, tenantid: Int!, SelfAssessmentTemplateInput: SelfAssessmentTemplateInput!): SelfAssessmentTemplate!
 }
 
 input NewJobInput {
@@ -98,4 +140,32 @@ input EmployeeSelfAssessmentSectionInput {
   assessmentid: Int!
   sectionid: Int!
   response: String
+}
+
+input PerformanceCycleInput {
+  tenantid: Int
+  cycleid: Int!
+  cyclename: String
+  cyclerange: String
+  startdate: DateTime
+  enddate: DateTime
+  status: String
+  description: String
+}
+
+input PerformanceTemplateInput {
+  templateid: Float!
+  tenantid: Int!
+  templatename: String
+  templatedescription: String
+}
+
+input SelfAssessmentTemplateInput {
+  tenantid: Int!
+  sectionid: Int!
+  functionalarea: String!
+  level: Float
+  sectiontitle: String!
+  ismandatory: Boolean!
+  sectiondetails: String
 }

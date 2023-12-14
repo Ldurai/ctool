@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PerformanceTemplateEntity } from './performance-template.entity';
-import { PerformanceTemplateModel } from './models/performance-template.model';
 
 @Injectable()
 export class PerformanceTemplateService {
@@ -25,11 +24,11 @@ export class PerformanceTemplateService {
         return template;
     }
 
-    async create(templateData: PerformanceTemplateModel): Promise<PerformanceTemplateEntity> {
+    async create(templateData: PerformanceTemplateEntity): Promise<PerformanceTemplateEntity> {
         return await this.repository.save(templateData);
     }
 
-    async update(templateId: number, templateData: PerformanceTemplateModel): Promise<PerformanceTemplateEntity> {
+    async update(templateId: number, templateData: PerformanceTemplateEntity): Promise<PerformanceTemplateEntity> {
         const template = await this.findOne(templateId);
         Object.assign(template, templateData);
         return await this.repository.save(template);

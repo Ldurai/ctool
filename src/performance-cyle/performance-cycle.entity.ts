@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
+import { CustomDateColumn } from '../common/CustomTypeORMDecorators';
 
 @Entity('performancecycle')
 export class PerformanceCycleEntity {
@@ -14,10 +15,10 @@ export class PerformanceCycleEntity {
     @Column({ length: 100, nullable: true })
     cyclerange: string;
 
-    @Column({ type: 'date', nullable: true })
+    @CustomDateColumn({ type: 'date', nullable: true })
     startdate: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @CustomDateColumn({ type: 'date', nullable: true })
     enddate: Date;
 
     @Column({ length: 50, nullable: true })

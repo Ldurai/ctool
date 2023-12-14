@@ -1,4 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { CustomDateColumn } from '../common/CustomTypeORMDecorators';
+
 
 @Entity('employees')
 export class EmployeeEntity {
@@ -17,7 +19,7 @@ export class EmployeeEntity {
     @Column({ length: 255, nullable: true })
     employee_photo_link: string;
 
-    @Column({ type: 'date', nullable: true })
+    @CustomDateColumn({ type: 'date', nullable: true })
     last_promo_date: Date;
 
     @Column({ type: 'integer', nullable: true })
@@ -47,6 +49,6 @@ export class EmployeeEntity {
     @Column({ type: 'integer', nullable: true })
     manager_id: number;
 
-    @Column({ type: 'date', nullable: true })
+    @CustomDateColumn({ type: 'date', nullable: true })
     hire_date: Date;
 }
