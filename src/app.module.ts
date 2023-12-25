@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { upperDirectiveTransformer } from './common/upper-case.directive';
-import { JobsModule } from './job/jobs.module'; // Import the JobsModule
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -14,7 +13,6 @@ import { PerformanceCycleModule } from './performance-cyle/performance-cycle.mod
 import { PerformanceTemplateModule } from './performance-template/performance-template.module';
 import { SelfAssessmentTemplateModule } from './self-assessment-template/self-assessment-template.module';
 // // Import your entities
- import { JobEntity } from './job/jobs.entity';
 import { EmployeeEntity } from './employees/employees.entity';
 import { EmployeeSelfAssessmentEntity } from './employee-self-assesment/employee-self-assessment.entity';
 import { EmployeeSelfAssessmentSectionsEntity } from './employee-self-assesment-sections/employee-self-assessment-sections.entity';
@@ -24,9 +22,9 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
 
 
 
+
 @Module({
   imports: [
-    JobsModule,
     EmployeeModule,
     EmployeeSelfAssessmentModule,
     EmployeeSelfAssessmentSectionsModule,
@@ -39,6 +37,11 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
       introspection: true,
       transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
       installSubscriptionHandlers: true,
+      formatError: (error) => {
+        console.log('error message is \n',error.message);
+        return {message: error.message};
+      },
+      
       buildSchemaOptions: {
         directives: [
           new GraphQLDirective({
@@ -52,7 +55,6 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
       type: 'postgres',
       url: 'postgres://lakshimi:3bcMX15PekuTB1o9qCG7CiIWxjtJ40nQ@dpg-cllqm09fb9qs7394381g-a.oregon-postgres.render.com/my_database_go6i',
       entities: [
-        JobEntity,
         EmployeeEntity,
         EmployeeSelfAssessmentEntity,
         EmployeeSelfAssessmentSectionsEntity,
@@ -69,7 +71,8 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
       },
       logging: true,
       logger: 'advanced-console',
-    }), 
+    }),
+     
   ],
   controllers: [AppController],
   providers: [AppService],

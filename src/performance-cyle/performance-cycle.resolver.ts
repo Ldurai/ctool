@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PerformanceCycleService } from './performance-cycle.service';
 import { PerformanceCycleType } from './dto/performance-cycle.type';
-import { PerformanceCycleInput } from './dto/performance-cycle.input';
+import { PerformanceCycleInput } from './dto/performance-cycle.create';
+import { PerformanceCycleUpdate } from './dto/performance-cycle.update';
 
 @Resolver(of => PerformanceCycleType)
 export class PerformanceCycleResolver {
@@ -41,13 +42,13 @@ return transformedCycles;
   async updatePerformanceCycle(
     @Args('tenantid') tenantId: number,
     @Args('cycleId')  cycleID: number,
-    @Args('performanceCycleInput') performanceCycleInput: PerformanceCycleInput,
+    @Args('performanceCycleUpdate') performanceCycleUpdate: PerformanceCycleUpdate,
   ): Promise<PerformanceCycleType> {
     const cycle = await this.performanceCycleService.findOne(tenantId,cycleID);
     if (!cycle) {
       throw new Error('Performance Cycle not found');
     }
-    return this.performanceCycleService.update(tenantId,cycleID, performanceCycleInput);
+    return this.performanceCycleService.update(tenantId,cycleID, performanceCycleUpdate);
   }
 
   @Mutation(returns => Boolean)

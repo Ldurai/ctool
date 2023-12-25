@@ -9,11 +9,7 @@ export class AppController {
   @Get('/hello')
   getHello(): string {
     console.log("entering conrtoller");
-    return this.appService.getHello();
-  }
-  @Get('/getjobs')
-  getJobs(): Promise<JobEntity[]> {
-    return this.appService.getJobs();
+    return "hello";
   }
   
 }

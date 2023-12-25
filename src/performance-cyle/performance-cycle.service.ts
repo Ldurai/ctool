@@ -2,6 +2,8 @@ import { Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PerformanceCycleEntity } from './performance-cycle.entity';
+import { PerformanceCycleInput } from './dto/performance-cycle.create';
+import { PerformanceCycleUpdate } from './dto/performance-cycle.update';
 
 @Injectable()
 export class PerformanceCycleService {
@@ -20,12 +22,20 @@ export class PerformanceCycleService {
     return this.performanceCycleRepository.findOne({ where: { tenantid: tenantid, cycleid: cycleId } });
   }
 
-  create(performanceCycle: PerformanceCycleEntity): Promise<PerformanceCycleEntity> {
+  create(performanceCycle: PerformanceCycleInput): Promise<PerformanceCycleEntity> {
+    console.log('performance cycle create', performanceCycle.startdate,performanceCycle.enddate);
+    if (performanceCycle.startdate > performanceCycle.enddate) {
+      console.log('start date is greater than end date');
+    }
     return this.performanceCycleRepository.save(performanceCycle);
   }
 
-  async update(tenantId: number, cycleId : number,updateData: Partial<PerformanceCycleEntity>): Promise<PerformanceCycleEntity> {
-    await this.performanceCycleRepository.update(tenantId, updateData);
+  async update(tenantId: number, cycleId : number,updateData: PerformanceCycleUpdate): Promise<PerformanceCycleEntity> {
+    const cycleToUpdate = await this.performanceCycleRepository.findOne({ where: { tenantid: tenantId, cycleid: cycleId } });
+  
+    if (cycleToUpdate) {
+      await this.performanceCycleRepository.save(updateData);
+    }
     return this.performanceCycleRepository.findOne({ where: { tenantid: tenantId, cycleid: cycleId } });
   }
 

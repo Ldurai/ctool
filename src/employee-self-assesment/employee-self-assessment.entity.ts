@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
-import { CustomDateColumn } from '../common/CustomTypeORMDecorators';
+import { CustomDateColumn } from '../common/CustomDecorators/CustomTypeORMDecorators';
 
 @Entity('employeeselfassessment')
 export class EmployeeSelfAssessmentEntity {
