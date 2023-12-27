@@ -14,20 +14,24 @@ export class PerformanceTemplateResolver {
     }
 
     @Query(returns => PerformanceTemplateType)
-    async performanceTemplate(@Args('templateId', { type: () => Int }) templateId: number) {
-        return this.performanceTemplateService.findOne(templateId);
+    async performanceTemplate(
+        @Args('tenantId', { type: () => Int }) tenantId: number,
+        @Args('templateId', { type: () => Int }) templateId: number)
+    {
+        return await this.performanceTemplateService.findOne(tenantId,templateId);
     }
 
     @Mutation(returns => PerformanceTemplateType)
     async createPerformanceTemplate(@Args('PerformanceTemplateInput') PerformanceTemplateInput: PerformanceTemplateInput) {
-        return this.performanceTemplateService.create(PerformanceTemplateInput);
+        return await this.performanceTemplateService.create(PerformanceTemplateInput);
     }
 
     @Mutation(returns => PerformanceTemplateType)
     async updatePerformanceTemplate(
-        @Args('id', { type: () => Int }) id: number,
+        @Args('tenantId', { type: () => Int }) tenantId: number,
+        @Args('templateId', { type: () => Int }) templateId: number,
         @Args('updatePerformanceTemplateInput') PerformanceTemplateInput: PerformanceTemplateInput,
     ) {
-        return this.performanceTemplateService.update(id, PerformanceTemplateInput);
+        return this.performanceTemplateService.update(tenantId, templateId,PerformanceTemplateInput);
     }
 }

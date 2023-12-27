@@ -67,12 +67,12 @@ type PerformanceTemplate {
 }
 
 type SelfAssessmentTemplate {
-  sectionid: Int!
-  tenantid: Int!
-  functionalarea: String!
+  sectionid: Float
+  tenantid: Float
+  functionalarea: String
   level: Float
-  sectiontitle: String!
-  ismandatory: Boolean!
+  sectiontitle: String
+  ismandatory: Boolean
   sectiondetails: String
 }
 
@@ -86,10 +86,10 @@ type Query {
   performanceCycles: [PerformanceCycleType!]!
   performanceCycle(tenantId: Float!, cycleId: Float!): PerformanceCycleType!
   performanceTemplates: [PerformanceTemplate!]!
-  performanceTemplate(templateId: Int!): PerformanceTemplate!
+  performanceTemplate(tenantId: Int!, templateId: Int!): PerformanceTemplate!
   selfAssessmentTemplates: [SelfAssessmentTemplate!]!
-  selfAssessmentTemplate(tenantid: Int!, sectionid: Int!): SelfAssessmentTemplate!
-  selfAssessmentTemplateBylevel(tenantid: Int!, functionalarea: String!, level: Int!): SelfAssessmentTemplate!
+  selfAssessmentTemplateByFunctionalarea(tenantid: Int!, functionalarea: String!): [SelfAssessmentTemplate!]!
+  selfAssessmentTemplateBylevel(tenantid: Int!, functionalarea: String!, level: Int!): [SelfAssessmentTemplate!]!
 }
 
 type Mutation {
@@ -103,9 +103,10 @@ type Mutation {
   updatePerformanceCycle(tenantid: Float!, cycleId: Float!, performanceCycleUpdate: PerformanceCycleUpdate!): PerformanceCycleType!
   deletePerformanceCycle(tenantId: Float!, cycleId: Float!): Boolean!
   createPerformanceTemplate(PerformanceTemplateInput: PerformanceTemplateInput!): PerformanceTemplate!
-  updatePerformanceTemplate(id: Int!, updatePerformanceTemplateInput: PerformanceTemplateInput!): PerformanceTemplate!
+  updatePerformanceTemplate(tenantId: Int!, templateId: Int!, updatePerformanceTemplateInput: PerformanceTemplateInput!): PerformanceTemplate!
   createSelfAssessmentTemplate(selfAssessmentTemplateInput: SelfAssessmentTemplateInput!): SelfAssessmentTemplate!
-  updateSelfAssessmentTemplate(sectionid: Int!, tenantid: Int!, SelfAssessmentTemplateInput: SelfAssessmentTemplateInput!): SelfAssessmentTemplate!
+  updateSelfAssessmentTemplate(tenantid: Int!, functionalarea: String!, sectionid: Int!, SelfAssessmentTemplateInput: SelfAssessmentTemplateInput!): SelfAssessmentTemplate!
+  deleteSelfAssessmentTemplate(tenantId: Float!, functionalarea: String!, sectionId: Float!): Boolean!
 }
 
 input EmployeeSelfAssessmentInput {

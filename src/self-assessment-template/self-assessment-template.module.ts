@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SelfAssessmentTemplateService } from './self-assessment-template.service';
-import { SelfAssessmentTemplateController } from './self-assessment-template.controller';
+//import { SelfAssessmentTemplateController } from './self-assessment-template.controller';
 import { SelfAssessmentTemplateEntity } from './self-assessment-template.entity';
 import { SelfAssessmentTemplateResolver } from './self-assessment-template.resolver';
 
@@ -10,6 +10,6 @@ import { SelfAssessmentTemplateResolver } from './self-assessment-template.resol
     TypeOrmModule.forFeature([SelfAssessmentTemplateEntity]),
   ],
   providers: [SelfAssessmentTemplateService,SelfAssessmentTemplateResolver],
-  controllers: [SelfAssessmentTemplateController],
+  controllers: [],
 })
 export class SelfAssessmentTemplateModule {}

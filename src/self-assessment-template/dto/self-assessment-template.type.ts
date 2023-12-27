@@ -4,22 +4,22 @@ import { Field, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType('SelfAssessmentTemplate')
 export class SelfAssessmentTemplateType {
-    @Field(type => Int)
+    @Field({nullable:true})
     sectionid: number;
 
-    @Field(type => Int)
+    @Field({nullable:true})
     tenantid: number;
 
-    @Field()
+    @Field({nullable:true})
     functionalarea: string;
 
     @Field({ nullable: true })
     level: number;
 
-    @Field()
+    @Field({nullable:true})
     sectiontitle: string;
 
-    @Field()
+    @Field({nullable:true})
     ismandatory: boolean;
 
     @Field({ nullable: true })

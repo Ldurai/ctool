@@ -14,8 +14,8 @@ export class PerformanceTemplateController {
     }
 
     @Get(':templateId')
-    async getOne(@Param('templateId') templateId: number, @Res() res: Response) {
-        const template = await this.service.findOne(templateId);
+    async getOne(@Param('tenantId') tenantId: number, @Param('templateId') templateId: number, @Res() res: Response) {
+        const template = await this.service.findOne(tenantId, templateId);
         return res.status(HttpStatus.OK).json(template);
     }
 
@@ -26,8 +26,8 @@ export class PerformanceTemplateController {
     }
 
     @Put(':templateId')
-    async update(@Param('templateId') templateId: number, @Body() templateData: PerformanceTemplateModel, @Res() res: Response) {
-        const updatedTemplate = await this.service.update(templateId, templateData);
+    async update(@Param('tenantId') tenantId: number, @Param('templateId') templateId: number,@Body() templateData: PerformanceTemplateModel, @Res() res: Response) {
+        const updatedTemplate = await this.service.update(tenantId, templateId,templateData);
         return res.status(HttpStatus.OK).json(updatedTemplate);
     }
 

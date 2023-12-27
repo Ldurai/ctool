@@ -1,12 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('selfassessmenttemplate')
 export class SelfAssessmentTemplateEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     sectionid: number;
 
-    @Column()
+    @Column({nullable: true})
     tenantid: number;
 
     @Column()

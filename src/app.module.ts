@@ -51,7 +51,7 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
         ],
       },
     }),
-    TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({ 
       type: 'postgres',
       url: 'postgres://lakshimi:3bcMX15PekuTB1o9qCG7CiIWxjtJ40nQ@dpg-cllqm09fb9qs7394381g-a.oregon-postgres.render.com/my_database_go6i',
       entities: [

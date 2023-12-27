@@ -16,8 +16,8 @@ export class PerformanceTemplateService {
         return await this.repository.find();
     }
 
-    async findOne(templateId: number): Promise<PerformanceTemplateEntity> {
-        const template = await this.repository.findOne({ where: { templateid: templateId } });
+    async findOne(tenantId: number, templateId: number): Promise<PerformanceTemplateEntity> {
+        const template = await this.repository.findOne({ where: { tenantid: tenantId,templateid: templateId } });
         if (!template) {
             throw new NotFoundException(`Template with ID ${templateId} not found`);
         }
@@ -28,8 +28,8 @@ export class PerformanceTemplateService {
         return await this.repository.save(templateData);
     }
 
-    async update(templateId: number, templateData: PerformanceTemplateEntity): Promise<PerformanceTemplateEntity> {
-        const template = await this.findOne(templateId);
+    async update(tenantId: number,templateId: number, templateData: PerformanceTemplateEntity): Promise<PerformanceTemplateEntity> {
+        const template = await this.findOne(tenantId,templateId);
         Object.assign(template, templateData);
         return await this.repository.save(template);
     }
