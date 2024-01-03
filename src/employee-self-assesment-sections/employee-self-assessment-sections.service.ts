@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EmployeeSelfAssessmentSectionsEntity } from './employee-self-assessment-sections.entity';
 import { EmployeeSelfAssessmentSectionInput } from './dto/employee-self-assessment-sections.input';
+import { EmployeeSelfAssessmentSectionsType } from './dto/employee-self-assessment-sections.type';
 
 @Injectable()
 export class EmployeeSelfAssessmentSectionsService {
@@ -16,9 +17,12 @@ export class EmployeeSelfAssessmentSectionsService {
         return await this.repository.find();
     }
 
+    async findOne(tenantId: number, employeeId: number, assessmentId: number, sectionId: number): Promise<EmployeeSelfAssessmentSectionsEntity> {
+        return await this.repository.findOne({ where: { tenant_id: tenantId, employeeid: employeeId, assessmentid: assessmentId, sectionid: sectionId } });
+    }
     // Fetch a single section by composite key
-    async findOne(tenantId: number, assessmentId: number, sectionId: number): Promise<EmployeeSelfAssessmentSectionsEntity> {
-        return await this.repository.findOne({ where: { tenant_id: tenantId, assessmentid: assessmentId, sectionid: sectionId } });
+    async findAllForEachEmployee(tenantId: number, employeeId: number, assessmentId: number): Promise<EmployeeSelfAssessmentSectionsEntity[]> {
+        return await this.repository.find({ where: { tenant_id: tenantId, employeeid: employeeId, assessmentid: assessmentId } });
     }
 
     // Create a new section
@@ -29,10 +33,10 @@ export class EmployeeSelfAssessmentSectionsService {
    
 
     // Update an existing section
-    async update(tenantId: number, assessmentId: number, sectionId: number,input: EmployeeSelfAssessmentSectionInput): Promise<EmployeeSelfAssessmentSectionsEntity> {
+    async update(tenantId: number, employeeId: number, assessmentId: number, sectionId: number,input: EmployeeSelfAssessmentSectionInput): Promise<EmployeeSelfAssessmentSectionsEntity> {
         console.log("entering update for sections in service");
 
-        const sectionToUpdate = await this.findOne(tenantId,assessmentId,sectionId);
+        const sectionToUpdate = await this.findOne(tenantId,employeeId,assessmentId,sectionId);
         if (!sectionToUpdate) throw new Error('Section not found');
 
         Object.assign(sectionToUpdate,input);
@@ -45,7 +49,7 @@ export class EmployeeSelfAssessmentSectionsService {
     async delete(tenantId: number, assessmentId: number, sectionId: number): Promise<void> {
         const result = await this.repository.delete({ tenant_id: tenantId, assessmentid: assessmentId, sectionid: sectionId });
         if (result.affected === 0) {
-            throw new Error('Section not found or not deleted');
+            throw new Error('Employee Assessment not deleted');
         }
     }
 }

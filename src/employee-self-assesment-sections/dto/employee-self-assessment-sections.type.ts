@@ -13,5 +13,17 @@ export class EmployeeSelfAssessmentSectionsType {
 
   @Field({ nullable: true })
   response?: string;
+
+  // Add the employeeid field
+  @Field(() => Int)
+  employeeid: number;
+
+  // Add the cycleid field
+  @Field(() => Int)
+  cycleid: number;
+
+  @Field({ nullable: true })
+  functionalarea?: string;
 }
+
 

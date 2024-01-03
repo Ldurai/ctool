@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('employeeselfassessmentsections')
 export class EmployeeSelfAssessmentSectionsEntity {
@@ -13,4 +13,13 @@ export class EmployeeSelfAssessmentSectionsEntity {
 
     @Column({ type: 'text', nullable: true })
     response: string;
+
+    @PrimaryColumn()
+    employeeid: number;
+
+    @PrimaryColumn()
+    cycleid: number;
+
+    @Column({ type: 'varchar', length: 50, nullable: true })
+    functionalarea: string;
 }

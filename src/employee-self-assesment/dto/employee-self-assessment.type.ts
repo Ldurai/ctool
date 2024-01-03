@@ -14,8 +14,8 @@ export class EmployeeSelfAssessmentType {
     @Field()
     assessmentdate: Date;
 
-    @Field(() => Int, { nullable: true })
-    performancecycleid?: number;
+    @Field(() => Int)
+    cycleid: number; // New non-nullable field
 
     @Field({ nullable: true })
     strengths?: string;
