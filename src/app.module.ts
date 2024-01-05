@@ -19,6 +19,14 @@ import { EmployeeSelfAssessmentSectionsEntity } from './employee-self-assesment-
 import { PerformanceCycleEntity } from './performance-cyle/performance-cycle.entity';
 import { PerformanceTemplateEntity } from './performance-template/performance-template.entity';
 import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-assessment-template.entity';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
+import { AnyARecord } from 'dns';
+
+
+
+
+
 
 
 
@@ -72,6 +80,13 @@ import { SelfAssessmentTemplateEntity } from './self-assessment-template/self-as
       logging: true,
       logger: 'advanced-console',
     }),
+    CacheModule.register({
+      store: redisStore,
+      socket :{
+      host: 'localhost',
+      port: 6379,
+      },
+      isGlobal: true}),
      
   ],
   controllers: [AppController],

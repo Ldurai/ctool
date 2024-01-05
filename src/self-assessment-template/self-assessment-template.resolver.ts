@@ -17,9 +17,9 @@ export class SelfAssessmentTemplateResolver {
     @Args('tenantid', { type: () => Int }) tenantid: number,
     @Args('functionalarea', { type: () => String }) functionalarea: string
     ) : Promise<SelfAssessmentTemplateType[]>{
-        console.log('resolve template calling service');
+       // console.log('resolve template calling service');
         const templates = await this.selfAssessmentTemplateService.findByFunctionalArea(tenantid, functionalarea);
-        console.log('resolve template ', templates);
+       // console.log('resolve template ', templates);
 
         if (!templates || templates.length === 0) {
           // Handle the case where no templates are found

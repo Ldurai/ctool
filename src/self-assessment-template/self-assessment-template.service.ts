@@ -1,13 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SelfAssessmentTemplateEntity } from './self-assessment-template.entity';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+
+
 
 @Injectable()
 export class SelfAssessmentTemplateService {
     constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
         @InjectRepository(SelfAssessmentTemplateEntity)
         private repository: Repository<SelfAssessmentTemplateEntity>,
+
     ) {}
     
     async findAllOrderedByFunctionalAreaAndSectionId(): Promise<SelfAssessmentTemplateEntity[]> {
@@ -49,15 +55,53 @@ export class SelfAssessmentTemplateService {
     }
 
     async findByFunctionalArea(tenantId: number, functionalarea: string): Promise<SelfAssessmentTemplateEntity[]> {
-        const templates = await this.repository.find({
-            where: { tenantid: tenantId, functionalarea: functionalarea }
-        });
-        console.log('templates', templates);
-        if (!templates || templates.length === 0) {
-            throw new NotFoundException(`Templates with Tenant ID ${tenantId}, function area ${functionalarea} not found`);
+
+        // Construct a unique cache key based on method arguments
+        const cacheKey = `findByFunctionalArea-${tenantId}-${functionalarea}`;
+        console.log ('cache key is<',cacheKey,'>');
+        console.log('log the cache manager',this.cacheManager.store);
+        const client: any = (this.cacheManager.store as any).getClient();
+        console.log('client is ',client);
+
+        // Attempt to retrieve cached data
+        let templates = await this.cacheManager.get<SelfAssessmentTemplateEntity[]>(cacheKey);
+
+        if (!templates) {
+            // Cache miss, so fetch data from the repository
+            console.log('cache miss');
+            templates = await this.repository.find({
+                where: { tenantid: tenantId, functionalarea: functionalarea }
+            });
+            //console.log('templates', templates);
+
+            if (!templates || templates.length === 0) {
+                throw new NotFoundException(`Templates with Tenant ID ${tenantId}, function area ${functionalarea} not found`);
+            }
+
+            try {
+                console.log('Templates caching starting');
+                await this.cacheManager.set('test-key-from code', 'test-value', 900000 );
+                const value = await this.cacheManager.get('test-key-from code');
+                console.log(value); // Should log 'test-value'
+              
+                // Cache the retrieved templates
+                await this.cacheManager.set(cacheKey, templates, 3600); // Cache for 1 hour; adjust as needed
+              
+                // Retrieve the cached data to verify it's been set correctly
+                const cachedData = await this.cacheManager.get<SelfAssessmentTemplateEntity[]>(cacheKey);
+                console.log('Templates cached successfully', cachedData);
+              } catch (cacheError) {
+                console.error('Failed to set cache for templates:', cacheError);
+              }    
+        } 
+        else 
+        {
+            console.log('Retrieved templates from cache:', templates);
         }
+
         return templates;
     }
+    
     
     async findOneByFunctionalareaSectionId(tenantId: number, functionalarea: string, sectionId: number): Promise<SelfAssessmentTemplateEntity> {
         const template = await this.repository.findOne({ where: { tenantid: tenantId, functionalarea: functionalarea, sectionid: sectionId } });
